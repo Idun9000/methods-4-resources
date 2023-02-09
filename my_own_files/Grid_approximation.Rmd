@@ -23,11 +23,25 @@ dist <- tibble(p_grid = seq(from = 0, to = 1, length.out = 20), # Building the g
                prior = rep(1, times = 20)) %>% # Setting the prior
               mutate(likelihood = dbinom(3, size = 4, prob = p_grid)) # Applying the likelihood functions to a cell in the grid
 
- dist <- dist %>% mutate(unstd_posterior = likelihood * prior)# Product of likelihood
+dist <- dist %>% mutate(unstd_posterior = likelihood * prior)# Product of likelihood
    
    
 dist <- dist %>% mutate(posterior = unstd_posterior / sum(unstd_posterior)) # Standardize posterior       
   
 ```
 
+### Maximum posterior
+```{r}
+(maxrow <- which.max(dist$posterior))
+
+dist[maxrow, ]
+```
+
+### Plooooot
+```{r}
+ggplot(dist, aes(x = p_grid, y = posterior)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "Proportion Water (p)", y = "Posterior Density")
+```
 
