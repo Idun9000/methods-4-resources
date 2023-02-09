@@ -1,0 +1,33 @@
+---
+title: "Grid Approximation"
+author: "Tilde Sloth"
+date: "2023-02-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Loading packages
+```{r}
+library(ggplot2)
+library(dplyr)
+library(purrr)
+library(tidyr)
+```
+
+### Grid Approximation
+```{r}
+dist <- tibble(p_grid = seq(from = 0, to = 1, length.out = 20), # Building the grid 
+               prior = rep(1, times = 20)) %>% # Setting the prior
+              mutate(likelihood = dbinom(3, size = 4, prob = p_grid)) # Applying the likelihood functions to a cell in the grid
+
+ dist <- dist %>% mutate(unstd_posterior = likelihood * prior)# Product of likelihood
+   
+   
+dist <- dist %>% mutate(posterior = unstd_posterior / sum(unstd_posterior)) # Standardize posterior       
+  
+```
+
+
